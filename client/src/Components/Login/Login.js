@@ -1,7 +1,7 @@
 import "./Login.css";
 
-var redirect = "https://spotifyxhc.netlify.app/";
-if (window.location === "http://localhost:3000") {
+var redirect = "https://spotifyxhc.netlify.app";
+if (window.location.href === "http://localhost:3000/") {
     redirect = "http://localhost:3000";
 }
 
