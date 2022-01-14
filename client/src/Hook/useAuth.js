@@ -7,13 +7,11 @@ const useAuth = ( code ) => {
     const [expiresIn, setExpiresIn] = useState();
 
     useEffect(() => {
-        console.log("Login started")
         axios.post("/api/login", {code}).then(res => {
             setAccessToken(res.data.accessToken);
             setRefreshToken(res.data.refreshToken);
             setExpiresIn(res.data.expiresIn);
             window.history.pushState({}, null, "/");
-            console.log("Login complete")
         }).catch(() => {
             window.location = "/";
         });

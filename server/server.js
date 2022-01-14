@@ -12,8 +12,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const port = process.env.PORT || 3001;
 
-console.log("Port: " + process.env.PORT, "REDIRECT: " + process.env.REDIRECT_URI);
-
 app.post("/api/refresh", (req, res) => {
     const refreshToken = req.body.refreshToken;
     const spotifyAPI = new SpotifyWebAPI({
@@ -37,18 +35,12 @@ app.get("/api/lyrics", async (req, res) => {
 })
 
 app.post("/api/login", (req, res) => {
-    console.log(redirect);
-    console.log("login started");
-
     const code = req.body.code;
     const spotifyAPI = new SpotifyWebAPI({
         redirectUri: process.env.REDIRECT_URI || "http://localhost:3000",
         clientId: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET
     });
-
-    console.log(spotifyAPI);
-    console.log("spotify api token made.");
 
     spotifyAPI.authorizationCodeGrant(code).then(data => {
         res.json({
