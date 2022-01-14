@@ -1,0 +1,21 @@
+.track {
+    margin: 4px;
+    cursor: pointer;
+}
+
+.track-icon {
+    width: 64px;
+    height: 64px;
+}
+
+.track-wrapper {
+    margin: 4px;
+}
+
+.track-title {
+    color: #191414;
+}
+
+.track-artist {
+    color: #999999;
+}
