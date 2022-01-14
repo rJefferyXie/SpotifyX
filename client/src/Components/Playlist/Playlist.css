@@ -1,0 +1,13 @@
+.playlist {
+    margin: 4px;
+    cursor: pointer;
+}
+
+.playlist-icon {
+    max-width: 64px;
+    object-fit: cover;
+}
+
+.playlist-wrapper {
+    margin: 4px;
+}
