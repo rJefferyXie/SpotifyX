@@ -45,3 +45,7 @@ input {
   border-radius: 8px;
   margin: 10px 0px 0px 0px;
 }
+
+h1 {
+  margin: auto;
+}
