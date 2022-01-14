@@ -8,9 +8,7 @@ import SpotifyWebAPI from "spotify-web-api-node";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const spotifyAPI = new SpotifyWebAPI({
-    clientId: "dda37808adc24142b51d4c186d4ba38b"
-});
+const spotifyAPI = new SpotifyWebAPI({ clientId: "dda37808adc24142b51d4c186d4ba38b" });
 
 const Dashboard = ({ code }) => {
     const accessToken = useAuth(code);
