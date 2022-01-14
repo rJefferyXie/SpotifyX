@@ -7,7 +7,7 @@ const useAuth = ( code ) => {
     const [expiresIn, setExpiresIn] = useState();
 
     useEffect(() => {
-        axios.post("http://localhost:3001/login", {code}).then(res => {
+        axios.post("api/login", {code}).then(res => {
             setAccessToken(res.data.accessToken);
             setRefreshToken(res.data.refreshToken);
             setExpiresIn(res.data.expiresIn);
@@ -21,7 +21,7 @@ const useAuth = ( code ) => {
         if (!refreshToken || !expiresIn) return;
 
         const interval = setInterval(() => {
-            axios.post("http://localhost:3001/refresh", {refreshToken}).then(res => {
+            axios.post("api/refresh", {refreshToken}).then(res => {
                 setAccessToken(res.data.accessToken);
                 setExpiresIn(res.data.expiresIn);
             }).catch(() => {
