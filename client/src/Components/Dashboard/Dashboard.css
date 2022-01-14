@@ -1,6 +1,13 @@
 #SongList {
-    height: 100%;
+    height: 90%;
     overflow-y: auto;
+    margin: 10px 0px;
+}
+
+#Playlists {
+    height: 90%;
+    overflow-y: auto;
+    margin: 10px 0px;
 }
 
 #SongLyrics {
