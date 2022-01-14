@@ -1,0 +1,8 @@
+#SongList {
+    height: 100%;
+    overflow-y: auto;
+}
+
+#SongLyrics {
+    white-space: pre;
+}
