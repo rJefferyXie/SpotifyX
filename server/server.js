@@ -12,6 +12,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const port = process.env.PORT || 3001;
 
+console.log("Port: " + process.env.PORT, "REDIRECT: " + process.env.REDIRECT_URI);
+
 app.post("/api/refresh", (req, res) => {
     const refreshToken = req.body.refreshToken;
     const spotifyAPI = new SpotifyWebAPI({
