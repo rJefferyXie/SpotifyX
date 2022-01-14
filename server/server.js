@@ -15,7 +15,7 @@ const port = process.env.PORT || 3001;
 app.post("/api/refresh", (req, res) => {
     const refreshToken = req.body.refreshToken;
     const spotifyAPI = new SpotifyWebAPI({
-        redirectUri: process.env.REDIRECT_URI || "http://localhost:3000",
+        redirectUri: process.env.REDIRECT_URI || "http://localhost:3000/",
         clientId: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
         refreshToken
@@ -37,7 +37,7 @@ app.get("/api/lyrics", async (req, res) => {
 app.post("/api/login", (req, res) => {
     const code = req.body.code;
     const spotifyAPI = new SpotifyWebAPI({
-        redirectUri: process.env.REDIRECT_URI || "http://localhost:3000",
+        redirectUri: process.env.REDIRECT_URI || "http://localhost:3000/",
         clientId: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET
     });
