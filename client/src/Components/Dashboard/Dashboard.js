@@ -128,7 +128,7 @@ const Dashboard = ({ code }) => {
     }, [search, accessToken]);
 
     return (
-        <section className="flex">
+        <section id="Dashboard" className="flex">
             <Navbar username={username} playlists={playlists} chooseTrack={chooseTrack}></Navbar>
             <div className="container flex-col">
                 <input type="search" placeholder="Search Songs/Artists" value={search} onChange={e => setSearch(e.target.value)}></input>

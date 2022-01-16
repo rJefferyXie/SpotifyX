@@ -19,3 +19,18 @@
 #SongLyrics {
     white-space: pre;
 }
+
+@media screen and (max-width: 960px) {
+    #Dashboard {
+        flex-direction: column;
+    }
+
+    #SearchResults {
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .searchResultList {
+        width: 100%;
+    }
+}
