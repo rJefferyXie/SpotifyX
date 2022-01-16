@@ -16,13 +16,13 @@
 }
 
 .container {
-  height: 100%;
-  width: 100%;
+  width: 80%;
   margin: auto;
+  padding: 8px;
 }
 
 section {
-  width: 90%;
+  width: 100%;
   height: 100vh;
   margin: auto;
 }
@@ -34,7 +34,6 @@ button {
   padding: 15px 20px;
   background-color: #1DB954;
   color: white;
-  margin: auto auto;
 }
 
 input {
@@ -47,5 +46,37 @@ input {
 }
 
 h1 {
-  margin: auto;
+  margin: 0px auto 4px auto;
+}
+
+p {
+  max-width: 50ch;
+  line-height: 1.3rem;
+}
+
+strong {
+  max-width: 50ch;
+}
+
+/* For ArtistSearchResult, TrackSearchResult, etc.. */
+.search-result {
+  margin: 4px;
+  cursor: pointer;
+}
+
+.search-result-icon {
+  width: 64px;
+  height: 64px;
+}
+
+.search-result-wrapper {
+  margin: 4px;
+}
+
+.search-result-title {
+  color: #191414;
+}
+
+.search-result-secondary {
+  color: #999999;
 }
