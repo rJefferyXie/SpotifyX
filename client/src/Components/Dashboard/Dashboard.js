@@ -1,9 +1,10 @@
 import useAuth from "../../Hook/useAuth";
 import "./Dashboard.css";
 
+import Navbar from "../Navbar/Navbar";
 import TrackSearchResult from "../TrackSearchResult/TrackSearchResult";
+import ArtistSearchResult from "../ArtistSearchResult/ArtistSearchResult";
 import Player from "../Player/Player";
-import Playlist from "../Playlist/Playlist";
 
 import SpotifyWebAPI from "spotify-web-api-node";
 import { useEffect, useState } from "react";
@@ -13,8 +14,14 @@ const spotifyAPI = new SpotifyWebAPI({ clientId: "dda37808adc24142b51d4c186d4ba3
 
 const Dashboard = ({ code }) => {
     const accessToken = useAuth(code);
+
     const [search, setSearch] = useState("");
-    const [searchResults, setSearchResults] = useState([]);
+    const [trackResults, setTrackResults] = useState([]);
+    const [albumResults, setAlbumResults] = useState([]);
+    const [artistResults, setArtistResults] = useState([]);
+    const [playlistResults, setPlaylistResults] = useState([]);
+    const [episodeResults, setEpisodeResults] = useState([]);
+
     const [playingTrack, setPlayingTrack] = useState();
     const [lyrics, setLyrics] = useState("");
     const [username, setUsername] = useState("");
@@ -69,14 +76,22 @@ const Dashboard = ({ code }) => {
     }, [accessToken]);
 
     useEffect(() => {
-        if (!search) return setSearchResults([]);
+        if (!search) {
+            setTrackResults([]);
+            setAlbumResults([]);
+            setArtistResults([]);
+            setEpisodeResults([]);
+            setPlaylistResults([]);
+            return;
+        }
         if (!accessToken) return;
 
         let cancel = false;
-        spotifyAPI.searchTracks(search).then(res => {
+        spotifyAPI.search(search, ["album", "artist", "episode", "playlist", "track"], {limit: 7}).then(res => {
             if (cancel) return;
-            setSearchResults(res.body.tracks.items.map(track => {
-                const smallestImage = track.album.images.reduce((smallest, image) => {
+            console.log(res.body);
+            setTrackResults(res.body.tracks.items.map(track => {
+                let smallestImage = track.album.images.reduce((smallest, image) => {
                     if (image.height < smallest.height) return image
                     else return smallest
                 }, track.album.images[0]);
@@ -84,7 +99,26 @@ const Dashboard = ({ code }) => {
                 return {
                     artist: track.artists[0].name,
                     title: track.name,
+                    popularity: track.popularity,
                     uri: track.uri,
+                    image: smallestImage.url
+                }
+            }));
+            setArtistResults(res.body.artists.items.map(artist => {
+                let smallestImage = artist.images.reduce((smallest, image) => {
+                    if (image.height < smallest.height) return image;
+                    else return smallest;
+                }, artist.images[0]);
+
+                let artistGenres = artist.genres.slice(0, 3);
+
+                return {
+                    name: artist.name,
+                    genres: artist.genres.length > 0 ? artistGenres.map((genre, i) => {
+                        return artistGenres[i] === artistGenres[artistGenres.length - 1] ? genre : genre + ", ";
+                    }) : "No Genres Found",
+                    popularity: artist.popularity,
+                    uri: artist.uri,
                     image: smallestImage.url
                 }
             }));
@@ -95,23 +129,29 @@ const Dashboard = ({ code }) => {
 
     return (
         <section className="flex">
+            <Navbar username={username} playlists={playlists} chooseTrack={chooseTrack}></Navbar>
             <div className="container flex-col">
                 <input type="search" placeholder="Search Songs/Artists" value={search} onChange={e => setSearch(e.target.value)}></input>
-                <div id="SongList" className="flex-col">
-                    {searchResults.map(track => (
-                    <TrackSearchResult track={track} key={track.uri} chooseTrack={chooseTrack}></TrackSearchResult>))}
-                    {searchResults.length === 0 && (
-                        <div id="SongLyrics">{lyrics}</div>
-                    )}
+                <div id="SearchResults" className="flex">
+                    <div className="flex-col searchResultList">
+                        {artistResults.length > 0 && (
+                            <h2>Songs</h2>
+                        )}
+                        {trackResults.map(track => (
+                        <TrackSearchResult track={track} key={track.uri} chooseTrack={chooseTrack}></TrackSearchResult>))}
+                        {trackResults.length === 0 && (
+                            <div id="SongLyrics">{lyrics}</div>
+                        )}
+                    </div>
+                    <div className="flex-col searchResultList">
+                        {artistResults.length > 0 && (
+                            <h2>Artists</h2>
+                        )}
+                        {artistResults.map(artist => (
+                        <ArtistSearchResult artist={artist} key={artist.uri} chooseTrack={chooseTrack}></ArtistSearchResult>))}
+                    </div>
                 </div>
                 <Player accessToken={accessToken} trackURI={playingTrack?.uri}></Player>
-            </div>
-            <div className="container flex-col">
-                <h1>{username}</h1>
-                <div id="Playlists" className="flex-col">
-                    {playlists.map(playlist => (
-                    <Playlist playlist={playlist} key={playlist.uri} chooseTrack={chooseTrack}></Playlist>))}
-                </div>
             </div>
         </section>
     );

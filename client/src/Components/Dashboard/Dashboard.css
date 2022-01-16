@@ -1,5 +1,11 @@
-#SongList {
-    height: 90%;
+#SearchResults {
+    height: 80vh;
+    width: 100%;
+}
+
+.searchResultList {
+    height: 100%;
+    width: 50%;
     overflow-y: auto;
     margin: 10px 0px;
 }
