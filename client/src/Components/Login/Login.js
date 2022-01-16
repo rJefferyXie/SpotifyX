@@ -11,6 +11,9 @@ const Login = () => {
     return (
         <section className="flex-col">
             <div className="container flex-col">
+                <h1>Welcome to SpotifyHXC!</h1>
+                <p>This website utilizes Spotify's API, and allows the user to play music or podcasts, edit playlists, and share music with others. </p>
+                <strong id="Notice"> Please note that you will need a Premium Spotify account in order to access the core features of this website.</strong>
                 <a id="Login-Button" href={AUTH_URL}>Login To Spotify</a>
             </div>
         </section>

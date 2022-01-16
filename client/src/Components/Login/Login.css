@@ -5,5 +5,9 @@
     padding: 15px 20px;
     background-color: #1DB954;
     color: white;
-    margin: auto auto;
+    margin: 0px auto;
+}
+
+#Notice {
+    margin: 20px auto 20px auto;
 }
