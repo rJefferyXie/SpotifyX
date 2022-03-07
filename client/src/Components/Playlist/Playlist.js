@@ -10,7 +10,7 @@ const Playlist = ({ playlist, chooseTrack }) => {
             <img className="playlist-icon" src={playlist.image} alt=""></img>
             <div className="playlist-wrapper flex-col">
                 <div className="playlist-name">{playlist.name}</div>
-                <div className="playlist-length">{playlist.length}</div>
+                <div className="playlist-length">{playlist.length} songs</div>
             </div>
         </div>
     )
