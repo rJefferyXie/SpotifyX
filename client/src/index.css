@@ -26,13 +26,10 @@ section {
   margin: auto;
 }
 
-button {
-  outline: none;
-  text-decoration: none;
-  border-radius: 1rem;
-  padding: 15px 20px;
-  background-color: #1DB954;
-  color: white;
+.mui-button {
+  text-shadow: 
+  0 0 1px rgba(255,255,255,0.8), 
+  1px 1px 1px rgba(0,0,0,0.4);
 }
 
 input {
@@ -59,7 +56,7 @@ strong {
 
 /* For ArtistSearchResult, TrackSearchResult, etc.. */
 .search-result {
-  margin: 4px;
+  margin: 1px;
   cursor: pointer;
 }
 
@@ -69,7 +66,7 @@ strong {
 }
 
 .search-result-wrapper {
-  margin: 4px;
+  margin: 0px 4px;
 }
 
 .search-result-title {
