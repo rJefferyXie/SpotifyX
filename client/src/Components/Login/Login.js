@@ -1,5 +1,7 @@
 import "./Login.css";
 
+import Button from "@mui/material/Button";
+
 var redirect = "https://spotifyxhc.netlify.app/";
 if (window.location.href === "http://localhost:3000/") {
     redirect = "http://localhost:3000/";
@@ -9,12 +11,12 @@ const AUTH_URL = `https://accounts.spotify.com/authorize?client_id=dda37808adc24
 
 const Login = () => {
     return (
-        <section className="flex-col">
+        <section className="flex-col" style={{height: "100vh"}}>
             <div className="container flex-col">
                 <h1>Welcome to SpotifyHXC!</h1>
-                <p>This website utilizes Spotify's API, and allows the user to play music or podcasts, edit playlists, and share music with others. </p>
+                <p style={{margin: "auto"}}>This website utilizes Spotify's API, and allows the user to play music or podcasts, edit playlists, and share music with others. </p>
                 <strong id="Notice"> Please note that you will need a Premium Spotify account in order to access the core features of this website.</strong>
-                <a id="Login-Button" href={AUTH_URL}>Login To Spotify</a>
+                <Button className="mui-button" href={AUTH_URL} style={{backgroundColor: "#1DB954", color: "white", width: "fit-content", margin: "auto"}}>Login To Spotify</Button>
             </div>
         </section>
     );
