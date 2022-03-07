@@ -23,6 +23,7 @@ const Dashboard = ({ code }) => {
     const [episodeResults, setEpisodeResults] = useState([]);
 
     const [playingTrack, setPlayingTrack] = useState();
+    const [trackName, setTrackName] = useState("");
     const [lyrics, setLyrics] = useState("");
     const [username, setUsername] = useState("");
     const [playlists, setPlaylists] = useState([]);
@@ -56,18 +57,21 @@ const Dashboard = ({ code }) => {
         setLyrics("");
     }
 
+    const updateTrack = (track) => {
+        setTrackName(track);
+    }
+
     useEffect(() => {
         if (!playingTrack) return;
-
         axios.get("/api/lyrics", {
             params: {
-                track: playingTrack.title,
+                track: trackName,
                 artist: playingTrack.artist
             }
         }).then(res => {
             setLyrics(res.data.lyrics);
         });
-    }, [playingTrack]);
+    }, [trackName]);
 
     useEffect(() => {
         if (!accessToken) return;
@@ -113,7 +117,7 @@ const Dashboard = ({ code }) => {
                 let artistGenres = artist.genres.slice(0, 3);
 
                 return {
-                    name: artist.name,
+                    artist: artist.name,
                     genres: artist.genres.length > 0 ? artistGenres.map((genre, i) => {
                         return artistGenres[i] === artistGenres[artistGenres.length - 1] ? genre : genre + ", ";
                     }) : "No Genres Found",
@@ -151,7 +155,7 @@ const Dashboard = ({ code }) => {
                         <ArtistSearchResult artist={artist} key={artist.uri} chooseTrack={chooseTrack}></ArtistSearchResult>))}
                     </div>
                 </div>
-                <Player accessToken={accessToken} trackURI={playingTrack?.uri}></Player>
+                <Player accessToken={accessToken} trackURI={playingTrack?.uri} updateTrack={updateTrack}></Player>
             </div>
         </section>
     );
