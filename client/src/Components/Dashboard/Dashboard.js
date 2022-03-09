@@ -21,6 +21,8 @@ const Dashboard = ({ code }) => {
     const [artistResults, setArtistResults] = useState([]);
     const [playlistResults, setPlaylistResults] = useState([]);
     const [episodeResults, setEpisodeResults] = useState([]);
+    const [topTracks, setTopTracks] = useState([]);
+    const [topArtists, setTopArtists] = useState([]);
 
     const [playingTrack, setPlayingTrack] = useState();
     const [trackName, setTrackName] = useState("");
@@ -77,6 +79,42 @@ const Dashboard = ({ code }) => {
         if (!accessToken) return;
         spotifyAPI.setAccessToken(accessToken);
         loadUserData();
+        spotifyAPI.getMyTopTracks({limit: 7}).then(res => {
+            setTopTracks(res.body.items.map(track => {
+                let smallestImage = track.album.images.reduce((smallest, image) => {
+                    if (image.height < smallest.height) return image
+                    else return smallest
+                }, track.album.images[0]);
+
+                return {
+                    artist: track.artists[0].name,
+                    title: track.name,
+                    popularity: track.popularity,
+                    uri: track.uri,
+                    image: smallestImage.url
+                }
+            }));
+        });
+        spotifyAPI.getMyTopArtists({limit: 7}).then(res => {
+            setTopArtists(res.body.items.map(artist => {
+                let smallestImage = artist.images.reduce((smallest, image) => {
+                    if (image.height < smallest.height) return image;
+                    else return smallest;
+                }, artist.images[0]);
+
+                let artistGenres = artist.genres.slice(0, 3);
+
+                return {
+                    artist: artist.name,
+                    genres: artist.genres.length > 0 ? artistGenres.map((genre, i) => {
+                        return artistGenres[i] === artistGenres[artistGenres.length - 1] ? genre : genre + ", ";
+                    }) : "No Genres Found",
+                    popularity: artist.popularity,
+                    uri: artist.uri,
+                    image: smallestImage.url
+                }
+            }));
+        })
     }, [accessToken]);
 
     useEffect(() => {
@@ -137,25 +175,31 @@ const Dashboard = ({ code }) => {
             <div className="container flex-col">
                 <input type="search" placeholder="Search Songs/Artists" value={search} onChange={e => setSearch(e.target.value)}></input>
                 <div id="SearchResults" className="flex">
+                    {trackResults.length === 0 && (<div id="SongLyrics">{lyrics}</div>)}
                     <div className="flex-col searchResultList">
-                        {artistResults.length > 0 && (
-                            <h2>Songs</h2>
-                        )}
+                        {artistResults.length > 0 && (<h2>Songs</h2>)}
                         {trackResults.map(track => (
                         <TrackSearchResult track={track} key={track.uri} chooseTrack={chooseTrack}></TrackSearchResult>))}
-                        {trackResults.length === 0 && (
-                            <div id="SongLyrics">{lyrics}</div>
-                        )}
                     </div>
                     <div className="flex-col searchResultList">
-                        {artistResults.length > 0 && (
-                            <h2>Artists</h2>
-                        )}
+                        {artistResults.length > 0 && (<h2>Artists</h2>)}
                         {artistResults.map(artist => (
                         <ArtistSearchResult artist={artist} key={artist.uri} chooseTrack={chooseTrack}></ArtistSearchResult>))}
                     </div>
                 </div>
                 <Player accessToken={accessToken} trackURI={playingTrack?.uri} updateTrack={updateTrack}></Player>
+            </div>
+            <div className="flex-col topResultList">
+                <div className="flex-col topList">
+                    <h1>Your Top Tracks</h1>
+                    {topTracks.map(track => (
+                    <TrackSearchResult track={track} key={track.uri} chooseTrack={chooseTrack}></TrackSearchResult>))}
+                </div>
+                <div className="flex-col topList">
+                    <h1>Your Top Artists</h1>
+                    {topArtists.map(artist => (
+                    <ArtistSearchResult artist={artist} key={artist.uri} chooseTrack={chooseTrack}></ArtistSearchResult>))}
+                </div>
             </div>
         </section>
     );
