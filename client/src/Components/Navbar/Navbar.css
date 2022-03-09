@@ -5,3 +5,11 @@ nav {
     background-color: #191414;
     color: white;
 }
+
+@media screen and (max-width: 768px) {
+    nav {
+        flex-direction: row;
+        width: 100%;
+        height: 240px;
+    }
+}
