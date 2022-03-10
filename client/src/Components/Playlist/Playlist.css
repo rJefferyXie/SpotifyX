@@ -19,3 +19,7 @@
     overflow: hidden; 
     width: 150px;
 }
+
+.playlist-length {
+    color: #999999;
+}
