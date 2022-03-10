@@ -2,7 +2,7 @@ import "./Player.css";
 import SpotifyPlayer from "react-spotify-web-playback";
 import { useState, useEffect } from "react";
 
-const Player = ({ accessToken, trackURI, updateTrack }) => {
+const Player = ({ accessToken, trackURI, updateTrack, setLyrics }) => {
     const [play, setPlay] = useState(false);
 
     useEffect(() => setPlay(true), [trackURI]);
@@ -10,6 +10,7 @@ const Player = ({ accessToken, trackURI, updateTrack }) => {
     const playerChanged = (state) => {
         if (!state.isPlaying) {
             setPlay(false);
+            setLyrics("");
         } else {
             try {
                 let player = document.getElementsByClassName("PlayerRSWP");
