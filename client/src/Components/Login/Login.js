@@ -13,7 +13,7 @@ const Login = () => {
     return (
         <section className="flex-col" style={{height: "100vh"}}>
             <div className="container flex-col">
-                <h1>Welcome to SpotifyHXC!</h1>
+                <h1>Welcome to SpotifyXHC!</h1>
                 <p style={{margin: "auto"}}>This website utilizes Spotify's API, and allows the user to play music or podcasts, edit playlists, and share music with others. </p>
                 <strong id="Notice"> Please note that you will need a Premium Spotify account in order to access the core features of this website.</strong>
                 <Button className="mui-button" href={AUTH_URL} style={{backgroundColor: "#1DB954", color: "white", width: "fit-content", margin: "auto"}}>Login To Spotify</Button>
