@@ -16,7 +16,7 @@
 }
 
 .container {
-  width: 50%;
+  width: min(90%, 740px);
   margin: auto;
   padding: 8px;
 }
@@ -46,6 +46,10 @@ h1 {
   width: fit-content;
 }
 
+h2 {
+  width: fit-content;
+}
+
 p {
   max-width: 50ch;
   line-height: 1.3rem;
@@ -57,10 +61,10 @@ strong {
 
 /* For ArtistSearchResult, TrackSearchResult, etc.. */
 .search-result {
-  margin: 1px;
-  width: min(90%, 240px);
+  width: min(100%, 240px);
   height: 64px;
   cursor: pointer;
+  background-color: black;
 }
 
 .search-result-icon {
@@ -86,4 +90,10 @@ strong {
   height: 20px;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+@media screen and (max-width: 960px) {
+  .search-result {
+    width: 100%;
+  }
 }
