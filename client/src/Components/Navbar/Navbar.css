@@ -2,8 +2,15 @@
     width: 240px;
     height: 100vh;
     padding: 8px;
+    overflow-y: auto;
     background-color: #191414;
     color: white;
+}
+
+.topList {
+    height: 100%;
+    width: 100%;
+    margin: 10px auto;
 }
 
 @media screen and (max-width: 768px) {
