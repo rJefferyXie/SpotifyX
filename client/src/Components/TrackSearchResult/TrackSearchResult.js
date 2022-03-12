@@ -1,6 +1,6 @@
 import "./TrackSearchResult.css";
 
-import Card from "@mui/material/Card"
+import Card from "@mui/material/Card";
 
 const TrackSearchResult = ({ track, chooseTrack, bg }) => {
     const play = () => {

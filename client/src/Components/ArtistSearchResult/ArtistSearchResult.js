@@ -1,6 +1,6 @@
 import "./ArtistSearchResult.css";
 
-import Card from "@mui/material/Card"
+import Card from "@mui/material/Card";
 
 const ArtistSearchResult = ({ artist, chooseTrack, bg }) => {
     const play = () => {
