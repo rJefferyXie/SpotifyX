@@ -3,6 +3,7 @@ import "./Dashboard.css";
 
 import Navbar from "../Navbar/Navbar";
 import TrackSearchResult from "../TrackSearchResult/TrackSearchResult";
+import AlbumSearchResult from "../AlbumSearchResult/AlbumSearchResult";
 import ArtistSearchResult from "../ArtistSearchResult/ArtistSearchResult";
 import Player from "../Player/Player";
 
@@ -47,7 +48,7 @@ const Dashboard = ({ code }) => {
                 uri: track.uri,
                 image: smallestImage.url
             }
-        })
+        });
     }
 
     const mapArtists = (artists, top) => {
@@ -73,14 +74,31 @@ const Dashboard = ({ code }) => {
                 uri: artist.uri,
                 image: smallestImage.url
             }
-        })
+        });
+    }
+
+    const mapAlbums = (albums) => {
+        return albums.map(album => {
+            let smallestImage = album.images.reduce((smallest, image) => {
+                if (image.height < smallest.height) return image
+                else return smallest
+            }, album.images[0]);
+
+            return {
+                artist: album.artists[0].name,
+                title: album.name,
+                length: album.total_tracks,
+                uri: album.uri,
+                image: smallestImage.url
+            }
+        });
     }
 
     const loadUserData = () => {
         spotifyAPI.getMe().then(userdata => {
             let id = userdata.body.id;
             setUsername(userdata.body.display_name);
-            spotifyAPI.getUserPlaylists(id).then(playlistdata => {
+            spotifyAPI.getUserPlaylists(id, {limit: 5}).then(playlistdata => {
                 setPlaylists(playlistdata.body.items.map(playlist => {
                         const smallestImage = playlist.images.reduce((smallest, image) => {
                             if (image.height < smallest.height) return image
@@ -125,17 +143,17 @@ const Dashboard = ({ code }) => {
         if (!accessToken) return;
         spotifyAPI.setAccessToken(accessToken);
         loadUserData();
-        spotifyAPI.getMyTopTracks({limit: 7}).then(res => {
+        spotifyAPI.getMyTopTracks({limit: 5}).then(res => {
             setTopTracks(mapTracks(res.body.items));
         });
-        spotifyAPI.getMyTopArtists({limit: 7}).then(res => {
+        spotifyAPI.getMyTopArtists({limit: 5}).then(res => {
             setTopArtists(mapArtists(res.body.items, "true"));
         });
     }, [accessToken]);
 
     useEffect(() => {
         spotifyAPI.getRecommendations({
-            seed_artists: artistSeeds.slice(0, 5),
+            seed_artists: artistSeeds,
             limit: 50
         }).then(res => {
             setRecommendedTracks(mapTracks(res.body.tracks));
@@ -153,9 +171,11 @@ const Dashboard = ({ code }) => {
 
         let cancel = false;
         spotifyAPI.search(search, ["album", "artist", "track"], {limit: 7}).then(res => {
+            console.log(res.body);
             if (cancel) return;
             setTrackResults(mapTracks(res.body.tracks.items));
             setArtistResults(mapArtists(res.body.artists.items, false));
+            setAlbumResults(mapAlbums(res.body.albums.items));
         });
 
         return () => cancel = true;
@@ -163,12 +183,12 @@ const Dashboard = ({ code }) => {
 
     return (
         <section id="Dashboard" className="flex">
-            <Navbar username={username} playlists={playlists} chooseTrack={chooseTrack}></Navbar>
+            <Navbar username={username} playlists={playlists} topTracks={topTracks} topArtists={topArtists} chooseTrack={chooseTrack}></Navbar>
             <div className="container flex-col">
                 <TextField type="search" label="Search for Songs, Artists or Albums..." value={search} onChange={e => setSearch(e.target.value)}></TextField>
                 {/* <Button onClick={() => test()} variant="contained" style={{width: "fit-content", margin: "4px auto"}}>Test</Button> */}
                 <div id="SearchResults" className="flex">
-                    {lyrics === "" ? null : <div id="SongLyrics">{lyrics}</div>}
+                    {(lyrics === "" || trackResults.length) ? null : <div id="SongLyrics">{lyrics}</div>}
                     {trackResults.length === 0 && artistResults.length === 0 &&
                     (<div id="Recommendation-container" className="flex-col">
                         <h2>Recommendations</h2>
@@ -189,20 +209,14 @@ const Dashboard = ({ code }) => {
                         {artistResults.map(artist => (
                         <ArtistSearchResult artist={artist} key={artist.uri} bg={"white"} chooseTrack={chooseTrack}></ArtistSearchResult>))}
                     </div> : null}
+                    {albumResults.length > 0 ? 
+                    <div className="flex-col searchResultList">
+                        <h2>Albums</h2>
+                        {albumResults.map(album => (
+                        <AlbumSearchResult album={album} key={album.uri} bg={"white"} chooseTrack={chooseTrack}></AlbumSearchResult>))}
+                    </div> : null}
                 </div>
                 <Player accessToken={accessToken} trackURI={playingTrack?.uri} updateTrack={updateTrack} setLyrics={setLyrics}></Player>
-            </div>
-            <div className="flex-col topResultList">
-                <div className="flex-col topList">
-                    <h1>Your Top Tracks</h1>
-                    {topTracks.map(track => (
-                    <TrackSearchResult track={track} key={track.uri} bg={"#191414"} chooseTrack={chooseTrack}></TrackSearchResult>))}
-                </div>
-                <div className="flex-col topList">
-                    <h1>Your Top Artists</h1>
-                    {topArtists.map(artist => (
-                    <ArtistSearchResult artist={artist} key={artist.uri} bg={"#191414"} chooseTrack={chooseTrack}></ArtistSearchResult>))}
-                </div>
             </div>
         </section>
     );
