@@ -23,3 +23,10 @@
 .playlist-length {
     color: #999999;
 }
+
+@media screen and (max-width: 960px) {
+    .playlist-icon {
+        width: 32px;
+        height: 32px;
+    }
+}
