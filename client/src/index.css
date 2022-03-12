@@ -16,7 +16,7 @@
 }
 
 .container {
-  width: min(90%, 740px);
+  width: min(90%, 840px);
   margin: auto;
   padding: 8px;
 }
@@ -95,5 +95,13 @@ strong {
 @media screen and (max-width: 960px) {
   .search-result {
     width: 100%;
+    height: initial;
+    margin: 1px;
+    border: none !important;
+  }
+
+  .search-result-icon {
+    width: 32px;
+    height: 32px;
   }
 }
